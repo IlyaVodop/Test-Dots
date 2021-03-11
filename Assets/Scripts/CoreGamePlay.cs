@@ -26,7 +26,13 @@ public class CoreGamePlay : MonoBehaviour
     private GameObject[] _figuresObjects;
     private LevelGenerator _levelGenerator;
     int _figuresCount;
-    private int _score;
+
+    private int Score
+    {
+        get => PlayerPrefs.GetInt("Score", 0);
+        set => PlayerPrefs.SetInt("Score", value);
+    }
+
     private Color initialColor = Color.black;
     private bool _isMousePressed;
 
@@ -62,7 +68,7 @@ public class CoreGamePlay : MonoBehaviour
             _figuresInfoList[i - 1].Color = _figuresObjects[i - 1].GetComponent<Renderer>().material.color = GetRandomColor();
         }
 
-
+        ScoreUpdated?.Invoke(Score);
     }
 
 
@@ -77,8 +83,8 @@ public class CoreGamePlay : MonoBehaviour
                 circle.Color = _figuresObjects[_figuresInfoList.IndexOf(circle)].GetComponent<Renderer>().material.color = GetRandomColor();
             }
 
-            _score += _usedCircles.Count * 10;
-            ScoreUpdated?.Invoke(_score);
+            Score += _usedCircles.Count * 10;
+            ScoreUpdated?.Invoke(Score);
         }
     }
 
