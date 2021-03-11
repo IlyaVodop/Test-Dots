@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private UIState _currentUIState;
 
     [SerializeField] private GameObject _mainPanel;
 
@@ -15,41 +12,68 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Button _exitGame;
 
-    void Start()
+    [SerializeField] private Text _score;
+
+    private enum UIState
+    {
+        Menu,
+        Game
+    }
+
+    private UIState _currentUIState;
+
+    private void Start()
     {
         Subscribe();
     }
 
-    private void UpdateState()
+    private void OnDestroy()
     {
-        _mainPanel.SetActive(_currentUIState == UIState.Game);
-    }
-
-    public enum UIState
-    {
-        Game
-    }
-
-    public void SetState(UIState state)
-    {
-        _currentUIState = state;
-        UpdateState();
+        UnSubscribe();
     }
 
     private void Subscribe()
     {
-        _startGame.onClick.AddListener(() =>
-        {
-            SoundManager.Instance.PlayAudio(SoundManager.Instance.BtnClip);
-            _mainPanel.gameObject.SetActive(false);
-            _level.gameObject.SetActive(true);
-        });
+        _startGame.onClick.AddListener(StartGame);
+        _exitGame.onClick.AddListener(ExitGame);
 
-        _exitGame.onClick.AddListener(() => { SoundManager.Instance.PlayAudio(SoundManager.Instance.BtnClip); });
+        CoreGamePlay.ScoreUpdated += LineDrawOnScoreUpdated;
     }
 
-    void Update()
+    private void UnSubscribe()
     {
+        _startGame.onClick.RemoveListener(StartGame);
+        _exitGame.onClick.RemoveListener(ExitGame);
 
+        CoreGamePlay.ScoreUpdated -= LineDrawOnScoreUpdated;
+    }
+
+    private void StartGame()
+    {
+        SoundManager.Instance.PlayClickSound();
+        SetState(UIState.Game);
+    }
+
+    void ExitGame()
+    {
+        SoundManager.Instance.PlayClickSound();
+        Application.Quit();
+    }
+
+    private void LineDrawOnScoreUpdated(int score)
+    {
+        _score.text = score.ToString();
+    }
+
+  
+    private void SetState(UIState state)
+    {
+        _currentUIState = state;
+        UpdateState();
+    }
+    private void UpdateState()
+    {
+        _mainPanel.SetActive(_currentUIState == UIState.Menu);
+        _level.SetActive(_currentUIState == UIState.Game);
     }
 }

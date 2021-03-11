@@ -5,22 +5,19 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance = null;
+#pragma warning disable 649
+    [SerializeField]
+    private AudioSource _musicSource;
 
-
+    [SerializeField]
+    private AudioSource _oneShotSource;
+#pragma warning restore 649
     public AudioClip BtnClip;
 
-    public AudioClip SoundClip;
-
-    void OnEnable()
+    public void PlayClickSound()
     {
-
-        PlayAudio(SoundClip);
+        _oneShotSource.PlayOneShot(BtnClip);
     }
-    public void PlayAudio(AudioClip clip)
-    {
-        GetComponent<AudioSource>().PlayOneShot(clip);
-    }
-
 
     void Awake()
     {
@@ -33,6 +30,14 @@ public class SoundManager : MonoBehaviour
     void OnDestroy()
     {
         Instance = null;
+    }
+
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            _musicSource.mute = !_musicSource.mute;
+        }
     }
 
 }
