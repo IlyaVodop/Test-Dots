@@ -151,7 +151,7 @@ public class lineDraw : MonoBehaviour
                     // Первое нажатие
                     if (!pointsList.Contains(pos) && pointsList.Count == 0)
                     {
-                        Debug.LogError("Первое нажатие");
+                    
                         pointsList.Add(pos);
                         usedCircles.Add(circleList[i - 1]);
                         line.startColor = circleList[i - 1].color;
@@ -172,7 +172,7 @@ public class lineDraw : MonoBehaviour
                             {
                                 pointsList.RemoveRange(unburnableIndex, pointsList.Count - (unburnableIndex + 1));
                             }
-                            Debug.LogError("Находимся внутри нового круга");
+                         
 
                             usedCircles.Add(circleList[i - 1]);
                             unburnableIndex++;
@@ -188,7 +188,7 @@ public class lineDraw : MonoBehaviour
                     // Находимся в предыдущем круге
                     if (usedCircles.Count > 1 && circleList[i - 1] == usedCircles[usedCircles.Count - 2])
                     {
-                        Debug.LogError("Находимся внутри ПРЕДЫДУЩЕГО КРУГА!");
+                      
 
                         usedCircles.Remove(usedCircles.Last());
                         unburnableIndex--;
@@ -230,7 +230,7 @@ public class lineDraw : MonoBehaviour
             var topNeighbor = circleList[i + 6];
             if (info == topNeighbor)
             {
-                Debug.LogError("Это верхний сосед!");
+              
                 return true;
             }
         }
@@ -240,7 +240,7 @@ public class lineDraw : MonoBehaviour
             var botNeighbor = circleList[i - 6];
             if (info == botNeighbor)
             {
-                Debug.LogError("Это нижний сосед!");
+               
                 return true;
             }
         }
@@ -250,7 +250,7 @@ public class lineDraw : MonoBehaviour
             var rightNeighbor = circleList[i + 1];
             if (info == rightNeighbor)
             {
-                Debug.LogError("Это правый сосед!");
+               
                 return true;
             }
         }
@@ -260,7 +260,7 @@ public class lineDraw : MonoBehaviour
             var leftNeighbor = circleList[i - 1];
             if (info == leftNeighbor)
             {
-                Debug.LogError("Это левый сосед!");
+               ;
                 return true;
             }
         }
